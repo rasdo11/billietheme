@@ -877,7 +877,7 @@ a.announcement-bar__inner, button.announcement-bar__inner { text-decoration: non
 .product__ingredient { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--espresso-06); font-size: 14px; }
 
 @media (max-width: 900px) {
-  .product__grid { grid-template-columns: 1fr; }
+  .product__grid { grid-template-columns: 1fr; gap: 20px; }
   .product__media { position: static; }
 
   /* Single-column PDP: promote the buy block above the long description.
@@ -893,6 +893,24 @@ a.announcement-bar__inner, button.announcement-bar__inner { text-decoration: non
   .product__info .product__features { order: 6; }
   .product__info .product__divider { order: 7; }
   .product__info .product__accordion { order: 8; }
+
+  /* Above-the-fold buy box: reorder the form so the primary Add-to-cart button
+     rises directly under the price. Secondary elements (gift banner, quantity
+     stepper, express-checkout button) drop below it. */
+  form[data-product-form] { display: flex; flex-direction: column; }
+  form[data-product-form] .product__trust-line--top { order: 1; }
+  form[data-product-form] .product__price { order: 2; margin-top: 12px; }
+  form[data-product-form] .product__sub-price { order: 3; }
+  form[data-product-form] .product__atc-row { order: 4; margin-top: 14px; }
+  form[data-product-form] .subscribe-card { order: 5; }
+  form[data-product-form] .gift-banner { order: 6; }
+  form[data-product-form] .product__qty-row { order: 7; }
+  form[data-product-form] .product__or-divider { order: 8; }
+  form[data-product-form] .product__payment-button { order: 9; }
+
+  /* Tighten vertical rhythm above the fold */
+  .product__title { margin-top: 2px; }
+  .product__ship-badge { margin-top: 10px; }
 }
 
 /* Cart drawer */
@@ -1002,7 +1020,9 @@ a.announcement-bar__inner, button.announcement-bar__inner { text-decoration: non
 
   /* Gallery: native scroll-snap on mobile */
   .pdp-gallery__thumbs { display: none; }
-  /* Scroll-snap container */
+  /* Scroll-snap container. Cap the height so the buy box (title, price,
+     Add-to-cart) stays reachable above the fold instead of a full-height
+     square pushing the CTA off-screen. */
   .pdp-gallery__main {
     display: flex;
     gap: 10px;
@@ -1010,6 +1030,9 @@ a.announcement-bar__inner, button.announcement-bar__inner { text-decoration: non
     scroll-snap-type: x mandatory;
     scrollbar-width: none; /* Firefox */
     -webkit-overflow-scrolling: touch;
+    aspect-ratio: auto;
+    height: 46vh;
+    max-height: 400px;
   }
   .pdp-gallery__main::-webkit-scrollbar { display: none; }
   /* Each slide: ~88% width so the next image peeks at the edge (Billie pattern);

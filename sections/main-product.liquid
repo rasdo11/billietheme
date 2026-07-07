@@ -196,33 +196,10 @@
           <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
           <input type="hidden" name="selling_plan" id="SellingPlanInput" value="">
 
-          {%- if product.variants.size > 1 -%}
-            {%- for option in product.options_with_values -%}
-              {%- assign option_index = forloop.index0 -%}
-              <div class="product__variant-group">
-                <div class="product__variant-label">{{ option.name }}</div>
-                <div class="product__variant-options">
-                  {%- for value in option.values -%}
-                    {%- assign variant_for_value = nil -%}
-                    {%- for v in product.variants -%}
-                      {%- if v.options[option_index] == value -%}
-                        {%- assign variant_for_value = v -%}
-                        {%- break -%}
-                      {%- endif -%}
-                    {%- endfor -%}
-                    {%- if variant_for_value -%}
-                      <button type="button" class="product__variant-option"
-                        data-variant-option
-                        data-variant-id="{{ variant_for_value.id }}"
-                        data-selected="{% if variant_for_value.id == product.selected_or_first_available_variant.id %}true{% else %}false{% endif %}">
-                        {{ value }}
-                      </button>
-                    {%- endif -%}
-                  {%- endfor -%}
-                </div>
-              </div>
-            {%- endfor -%}
-          {%- endif -%}
+          {%- comment -%}
+            Variant/color picker intentionally removed — this product is sold as a
+            single configuration. The hidden `id` input above carries the variant id.
+          {%- endcomment -%}
 
           {%- comment -%} Trust line — before price so it's seen before cost {%- endcomment -%}
           <p class="product__trust-line product__trust-line--top">Third-party tested &middot; Free shipping over $50 &middot; Cancel anytime</p>
@@ -267,7 +244,7 @@
           </div>
 
           <div class="product__or-divider">or</div>
-          {{ form | payment_button }}
+          <div class="product__payment-button">{{ form | payment_button }}</div>
 
           {%- comment -%} Subscribe & Save card {%- endcomment -%}
           <div class="subscribe-card">
